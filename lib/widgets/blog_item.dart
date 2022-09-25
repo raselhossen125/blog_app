@@ -73,18 +73,22 @@ class BlogItem extends StatelessWidget {
                 children: [
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
-                        'Shakib all hasan',
-                        style: mediamBold,
+                      Expanded(
+                        child: Text(
+                          'Shakib all hasan',
+                          style: smallBold,
+                        ),
                       ),
+                      SizedBox(width: 10),
                       Text(
                         'Sports',
                         style: smallBold,
                       ),
                     ],
                   ),
-                  SizedBox(height: 10),
+                  SizedBox(height: 15),
                   Text(
                     txt,
                     textAlign: TextAlign.justify,

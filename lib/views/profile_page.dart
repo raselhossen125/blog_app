@@ -1,9 +1,11 @@
 // ignore_for_file: use_key_in_widget_constructors, prefer_const_constructors, prefer_const_literals_to_create_immutables, sized_box_for_whitespace
 
+import 'package:blog_app/route/my_app_routes.dart';
 import 'package:blog_app/utils/colors.dart';
 import 'package:blog_app/utils/style.dart';
 import 'package:blog_app/widgets/blog_item.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class ProfilePage extends StatelessWidget {
   @override
@@ -56,6 +58,35 @@ class ProfilePage extends StatelessWidget {
               )
             ],
           ),
+          Container(
+            margin: EdgeInsets.only(top: 10, right: 10),
+            alignment: Alignment.centerRight,
+            height: 42,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(10),
+              color: Colors.grey.withOpacity(0.1),
+            ),
+            child: Padding(
+              padding: const EdgeInsets.only(right: 10),
+              child: InkWell(
+                onTap: () {
+                  Get.toNamed(MyAppRoutes.editProfilePageRoute);
+                },
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    Text(
+                      'Edit profile',
+                      style: mediamBold,
+                    ),
+                    SizedBox(width: 10),
+                    Icon(Icons.edit),
+                  ],
+                ),
+              ),
+            ),
+          ),
           Padding(
             padding: const EdgeInsets.only(top: 72, left: 40),
             child: Text(
@@ -65,7 +96,10 @@ class ProfilePage extends StatelessWidget {
           ),
           Padding(
             padding: const EdgeInsets.only(top: 30, bottom: 10, left: 10),
-            child: Text('My Blog', style: mediamBold,),
+            child: Text(
+              'My Blog',
+              style: mediamBold,
+            ),
           ),
           Expanded(
             child: ListView.builder(

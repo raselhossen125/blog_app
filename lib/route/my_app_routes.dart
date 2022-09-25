@@ -3,5 +3,7 @@ class MyAppRoutes {
   static const logInPageRoute = '/logIn-page';
   static const registerPageRoute = '/register-page';
   static const blogPageRoute = '/blog-page';
-  static const profileageRoute = '/profile-page';
+  static const profilePageRoute = '/profile-page';
+  static const editProfilePageRoute = '/edit-profile-page';
+  static const addBlogPageRoute = '/add-blog-page';
 }

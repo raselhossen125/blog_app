@@ -1,3 +1,5 @@
+import 'package:blog_app/views/add_blog_page.dart';
+import 'package:blog_app/views/edit_profile_page.dart';
 import 'package:get/get.dart';
 import '../views/auth/login_page.dart';
 import '../views/auth/register_page.dart';
@@ -25,8 +27,16 @@ class MyAppPages {
       page: () => BlogPage(),
     ),
     GetPage(
-      name: MyAppRoutes.profileageRoute,
+      name: MyAppRoutes.addBlogPageRoute,
+      page: () => AddBlogpage(),
+    ),
+    GetPage(
+      name: MyAppRoutes.profilePageRoute,
       page: () => ProfilePage(),
+    ),
+    GetPage(
+      name: MyAppRoutes.editProfilePageRoute,
+      page: () => EditProfilePage(),
     ),
   ];
 }

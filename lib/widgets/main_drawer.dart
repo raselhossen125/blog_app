@@ -55,30 +55,37 @@ class MainDrawer extends StatelessWidget {
                 ],
               ),
             ),
-            ListTile(
-              onTap: () {
-                Get.toNamed(MyAppRoutes.profileageRoute);
-              },
-              leading: Icon(
-                Icons.person,
-                color: iconColor,
+            Padding(
+              padding: const EdgeInsets.only(top: 10, left: 15),
+              child: Column(
+                children: [
+                  ListTile(
+                    onTap: () {
+                      Get.toNamed(MyAppRoutes.profilePageRoute);
+                    },
+                    leading: Icon(
+                      Icons.person,
+                      color: iconColor,
+                    ),
+                    title: Text(
+                      'Profile',
+                      style: smallBold,
+                    ),
+                  ),
+                  ListTile(
+                    onTap: () {},
+                    leading: Icon(
+                      Icons.home,
+                      color: iconColor,
+                    ),
+                    title: Text(
+                      'My Blog',
+                      style: smallBold,
+                    ),
+                  ),
+                ],
               ),
-              title: Text(
-                'Profile',
-                style: smallBold,
-              ),
-            ),
-            ListTile(
-              onTap: () {},
-              leading: Icon(
-                Icons.home,
-                color: iconColor,
-              ),
-              title: Text(
-                'My Blog',
-                style: smallBold,
-              ),
-            ),
+            )
           ],
         ),
       ),

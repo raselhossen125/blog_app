@@ -11,6 +11,11 @@ const smallNormal = TextStyle(
   fontSize: 16,
 );
 
+const smallNormalW = TextStyle(
+  color: Colors.white,
+  fontSize: 16,
+);
+
 const smallBold = TextStyle(
   color: Colors.black,
   fontWeight: FontWeight.bold,
