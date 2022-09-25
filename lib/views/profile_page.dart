@@ -7,6 +7,8 @@ import 'package:blog_app/widgets/blog_item.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../widgets/profile_blog_item.dart';
+
 class ProfilePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -107,7 +109,7 @@ class ProfilePage extends StatelessWidget {
               shrinkWrap: true,
               itemCount: 5,
               itemBuilder: (context, index) {
-                return BlogItem();
+                return ProfileBlogItem();
               },
             ),
           ),

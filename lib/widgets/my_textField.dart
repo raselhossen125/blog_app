@@ -6,19 +6,22 @@ import 'package:flutter/material.dart';
 class MyTextField extends StatelessWidget {
   TextEditingController controller;
   String hintText;
-  IconData prefixIcon;
+  IconData? prefixIcon;
   TextInputType? keyBordType;
+  int? maxLine;
 
   MyTextField({
     required this.controller,
     required this.hintText,
-    required this.prefixIcon,
+    this.prefixIcon,
     this.keyBordType,
+    this.maxLine = 1,
   });
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      maxLines: maxLine,
       keyboardType: keyBordType,
       controller: controller,
       cursorColor: appColor,

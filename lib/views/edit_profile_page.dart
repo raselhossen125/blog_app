@@ -10,6 +10,7 @@ import '../utils/style.dart';
 
 class EditProfilePage extends StatelessWidget {
   final nameController = TextEditingController();
+  final emailController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -112,7 +113,7 @@ class EditProfilePage extends StatelessWidget {
                   ),
                   SizedBox(height: 15),
                   MyTextField(
-                    controller: nameController,
+                    controller: emailController,
                     hintText: 'Enter updated name',
                     prefixIcon: Icons.email,
                   ),

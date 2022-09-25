@@ -1,10 +1,18 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, sized_box_for_whitespace, use_key_in_widget_constructors
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, sized_box_for_whitespace, use_key_in_widget_constructors, sort_child_properties_last
 
 import 'package:blog_app/utils/colors.dart';
 import 'package:flutter/material.dart';
 import '../utils/style.dart';
 
-class BlogItem extends StatelessWidget {
+class ProfileBlogItem extends StatefulWidget {
+  @override
+  State<ProfileBlogItem> createState() => _ProfileBlogItemState();
+}
+
+class _ProfileBlogItemState extends State<ProfileBlogItem> {
+  final items = ['Sports', 'Movie', 'Game', 'Natok', 'Country'];
+  String? dwValue;
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -32,6 +40,20 @@ class BlogItem extends StatelessWidget {
                       Text(
                         'Cristiano Ronaldo',
                         style: smallBold,
+                      ),
+                      SizedBox(width: 10),
+                      Spacer(),
+                      PopupMenuButton(
+                        itemBuilder: (context) => [
+                          PopupMenuItem(
+                            child: Text("Edit"),
+                            value: 1,
+                          ),
+                          PopupMenuItem(
+                            child: Text("Delete"),
+                            value: 2,
+                          )
+                        ],
                       ),
                     ],
                   ),

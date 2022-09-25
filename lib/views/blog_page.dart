@@ -46,17 +46,20 @@ class _BlogPageState extends State<BlogPage> {
       ),
       floatingActionButton: Visibility(
         visible: isVisible,
-        child: FloatingActionButton.extended(
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
-          backgroundColor: btnColor,
-          onPressed: () {
-            Get.toNamed(MyAppRoutes.addBlogPageRoute);
-          },
-          icon: Icon(Icons.add),
-          label: Text(
-            'Add blog',
-            style: smallNormalW,
+        child: SizedBox(
+          height: 55,
+          child: FloatingActionButton.extended(
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+            backgroundColor: btnColor,
+            onPressed: () {
+              Get.toNamed(MyAppRoutes.addBlogPageRoute);
+            },
+            icon: Icon(Icons.add),
+            label: Text(
+              'Add blog',
+              style: smallNormalW,
+            ),
           ),
         ),
       ),
