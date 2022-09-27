@@ -105,7 +105,7 @@ class _LogInPageState extends State<LogInPage> {
                     SizedBox(height: 35),
                     InkWell(
                       onTap: () {
-                        Get.offNamed(MyAppRoutes.blogPageRoute);
+                        Get.offNamed(MyAppRoutes.bottomNavPageRoute);
                       },
                       child: Container(
                         alignment: Alignment.center,

@@ -20,46 +20,80 @@ class _BlogPageState extends State<BlogPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: MainDrawer(),
-      appBar: AppBar(
-        title: Text('Blog'),
-      ),
-      body: NotificationListener<UserScrollNotification>(
-        onNotification: (notification) {
-          if (notification.direction == ScrollDirection.forward) {
-            setState(() {
-              isVisible = true;
-            });
-          } else if (notification.direction == ScrollDirection.reverse) {
-            setState(() {
-              isVisible = false;
-            });
-          }
-          return true;
-        },
-        child: ListView.builder(
-          itemCount: 5,
-          itemBuilder: (context, index) {
-            return BlogItem();
-          },
-        ),
-      ),
-      floatingActionButton: Visibility(
-        visible: isVisible,
-        child: SizedBox(
-          height: 55,
-          child: FloatingActionButton.extended(
-            shape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
-            backgroundColor: btnColor,
-            onPressed: () {
-              Get.toNamed(MyAppRoutes.addBlogPageRoute);
-            },
-            icon: Icon(Icons.add),
-            label: Text(
-              'Add blog',
-              style: smallNormalW,
+      floatingActionButton: isVisible
+          ? AnimatedContainer(
+              height: 55,
+              width: 150,
+              duration: Duration(milliseconds: 200),
+              child: FloatingActionButton.extended(
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(15)),
+                backgroundColor: btnColor,
+                onPressed: () {
+                  Get.toNamed(MyAppRoutes.addBlogPageRoute);
+                },
+                icon: Icon(Icons.add),
+                label: Text(
+                  'Add blog',
+                  style: smallNormalW,
+                ),
+              ),
+            )
+          : AnimatedContainer(
+              height: 55,
+              width: 55,
+              duration: Duration(milliseconds: 200),
+              child: FloatingActionButton(
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(15)),
+                backgroundColor: btnColor,
+                onPressed: () {
+                  Get.toNamed(MyAppRoutes.addBlogPageRoute);
+                },
+                child: Icon(
+                  Icons.add,
+                  color: Colors.white,
+                ),
+              ),
             ),
+      drawer: MainDrawer(),
+      body: NestedScrollView(
+        floatHeaderSlivers: true,
+        headerSliverBuilder: (context, innerBoxIsScrolled) {
+          return [
+            SliverAppBar(
+              floating: true,
+              snap: true,
+              title: Text(
+                'Blog',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 20,
+                ),
+              ),
+            )
+          ];
+        },
+        body: NotificationListener<UserScrollNotification>(
+          onNotification: (notification) {
+            if (notification.direction == ScrollDirection.forward) {
+              setState(() {
+                isVisible = true;
+              });
+            } else if (notification.direction == ScrollDirection.reverse) {
+              setState(() {
+                isVisible = false;
+              });
+            }
+            return true;
+          },
+          child: ListView.builder(
+            padding: EdgeInsets.all(0),
+            itemCount: 5,
+            itemBuilder: (context, index) {
+              return BlogItem();
+            },
           ),
         ),
       ),

@@ -25,10 +25,11 @@ class _ProfileBlogItemState extends State<ProfileBlogItem> {
               padding: const EdgeInsets.only(left: 10, right: 10, bottom: 10),
               child: Column(
                 children: [
-                  SizedBox(height: 10),
                   Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Container(
+                        margin: EdgeInsets.only(top: 10),
                         height: 30,
                         width: 30,
                         child: ClipRRect(
@@ -37,9 +38,14 @@ class _ProfileBlogItemState extends State<ProfileBlogItem> {
                         ),
                       ),
                       SizedBox(width: 10),
-                      Text(
-                        'Cristiano Ronaldo',
-                        style: smallBold,
+                      Expanded(
+                        child: Padding(
+                          padding: const EdgeInsets.only(top: 16),
+                          child: Text(
+                            'Cristiano Ronaldo',
+                            style: smallBold,
+                          ),
+                        ),
                       ),
                       SizedBox(width: 10),
                       Spacer(),

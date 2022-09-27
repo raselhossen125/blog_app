@@ -1,4 +1,5 @@
 import 'package:blog_app/views/add_blog_page.dart';
+import 'package:blog_app/views/bottom_nav_page.dart';
 import 'package:blog_app/views/edit_profile_page.dart';
 import 'package:get/get.dart';
 import '../views/auth/login_page.dart';
@@ -21,6 +22,10 @@ class MyAppPages {
     GetPage(
       name: MyAppRoutes.registerPageRoute,
       page: () => RegisterPage(),
+    ),
+    GetPage(
+      name: MyAppRoutes.bottomNavPageRoute,
+      page: () => ShowBottomNavScreen(),
     ),
     GetPage(
       name: MyAppRoutes.blogPageRoute,

@@ -120,7 +120,7 @@ class EditProfilePage extends StatelessWidget {
                   SizedBox(height: 30),
                   InkWell(
                       onTap: () {
-                        Get.offAllNamed(MyAppRoutes.blogPageRoute);
+                        Get.offAllNamed(MyAppRoutes.bottomNavPageRoute);
                       },
                       child: Container(
                         alignment: Alignment.center,

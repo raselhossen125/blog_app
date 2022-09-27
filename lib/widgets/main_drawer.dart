@@ -73,13 +73,15 @@ class MainDrawer extends StatelessWidget {
                     ),
                   ),
                   ListTile(
-                    onTap: () {},
+                    onTap: () {
+                      
+                    },
                     leading: Icon(
-                      Icons.home,
+                      Icons.search,
                       color: iconColor,
                     ),
                     title: Text(
-                      'My Blog',
+                      'Search',
                       style: smallBold,
                     ),
                   ),

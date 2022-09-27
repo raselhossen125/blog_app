@@ -25,177 +25,200 @@ class _AddBlogpageState extends State<AddBlogpage> {
     size = MediaQuery.of(context).size;
     return Scaffold(
       backgroundColor: bgColor,
-      appBar: AppBar(
-        title: Text('New Blog'),
-      ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            ClipRRect(
-              child: Image.asset(
-                'images/image1.jpg',
-                height: 250,
-                width: size.width,
-                fit: BoxFit.cover,
+      body: NestedScrollView(
+        floatHeaderSlivers: true,
+        headerSliverBuilder: (context, innerBoxIsScrolled) {
+          return [
+            SliverAppBar(
+              floating: true,
+              snap: true,
+              title: Text(
+                'New Blog',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 20,
+                ),
               ),
-            ),
-            SizedBox(height: 15),
-            InkWell(
-              onTap: () {
-                Get.bottomSheet(
-                  Container(
-                    height: 200,
-                    width: size.width,
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(25),
-                        topRight: Radius.circular(25),
+            )
+          ];
+        },
+        body: SingleChildScrollView(
+          child: Column(
+            children: [
+              ClipRRect(
+                child: Image.asset(
+                  'images/image1.jpg',
+                  height: 250,
+                  width: size.width,
+                  fit: BoxFit.cover,
+                ),
+              ),
+              SizedBox(height: 15),
+              InkWell(
+                onTap: () {
+                  Get.bottomSheet(
+                    Container(
+                      height: 200,
+                      width: size.width,
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(25),
+                          topRight: Radius.circular(25),
+                        ),
+                      ),
+                      child: Column(
+                        children: [
+                          SizedBox(height: 8),
+                          Container(
+                            height: 5,
+                            width: 60,
+                            color: Colors.grey.withOpacity(0.2),
+                          ),
+                          SizedBox(height: 40),
+                          TextButton.icon(
+                            onPressed: () {},
+                            icon: Icon(
+                              Icons.camera,
+                              color: iconColor,
+                            ),
+                            label: Text(
+                              'Chose From Camera',
+                              style: mediamBold,
+                            ),
+                          ),
+                          TextButton.icon(
+                            onPressed: () {},
+                            icon: Icon(
+                              Icons.image,
+                              color: iconColor,
+                            ),
+                            label: Text(
+                              'Chose From Galery',
+                              style: mediamBold,
+                            ),
+                          ),
+                        ],
                       ),
                     ),
-                    child: Column(
-                      children: [
-                        SizedBox(height: 8),
-                        Container(
-                          height: 5,
-                          width: 60,
-                          color: Colors.grey.withOpacity(0.2),
-                        ),
-                        SizedBox(height: 40),
-                        TextButton.icon(
-                          onPressed: () {},
-                          icon: Icon(
-                            Icons.camera,
-                            color: iconColor,
-                          ),
-                          label: Text(
-                            'Chose From Camera',
-                            style: mediamBold,
-                          ),
-                        ),
-                        TextButton.icon(
-                          onPressed: () {},
-                          icon: Icon(
-                            Icons.image,
-                            color: iconColor,
-                          ),
-                          label: Text(
-                            'Chose From Galery',
-                            style: mediamBold,
-                          ),
-                        ),
-                      ],
-                    ),
+                    barrierColor: appColor.withOpacity(0.5),
+                  );
+                },
+                child: Container(
+                  alignment: Alignment.center,
+                  height: 50,
+                  width: 170,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(23),
+                    color: btnColor,
                   ),
-                  barrierColor: appColor.withOpacity(0.5),
-                );
-              },
-              child: Container(
-                alignment: Alignment.center,
-                height: 50,
-                width: 170,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(23),
-                  color: btnColor,
-                ),
-                child: Text(
-                  'Chose Image',
-                  style: mediamBoldW,
+                  child: Text(
+                    'Chose Image',
+                    style: mediamBoldW,
+                  ),
                 ),
               ),
-            ),
-            SizedBox(height: 50),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 15),
-              child: Column(
-                children: [
-                  Container(
-                    padding: EdgeInsets.symmetric(horizontal: 15, vertical: 0),
-                    decoration: BoxDecoration(
-                      border: Border.all(color: appColor, width: 3),
-                      borderRadius: BorderRadius.circular(15),
-                    ),
-                    child: DropdownButtonHideUnderline(
-                      child: DropdownButton<String>(
-                        hint: Text('Select Category', style: smallBold,),
-                        icon: Icon(Icons.arrow_drop_down, color: iconColor,),
-                        isExpanded: true,
-                        value: dwValue,
-                        items: items
-                            .map(
-                              (item) => DropdownMenuItem<String>(
-                                value: item,
-                                child: Text(
-                                  item,
-                                  style: smallBold,
+              SizedBox(height: 50),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 15),
+                child: Column(
+                  children: [
+                    Container(
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 15, vertical: 0),
+                      decoration: BoxDecoration(
+                        border: Border.all(color: appColor, width: 3),
+                        borderRadius: BorderRadius.circular(15),
+                      ),
+                      child: DropdownButtonHideUnderline(
+                        child: DropdownButton<String>(
+                          hint: Text(
+                            'Select Category',
+                            style: smallBold,
+                          ),
+                          icon: Icon(
+                            Icons.arrow_drop_down,
+                            color: iconColor,
+                          ),
+                          isExpanded: true,
+                          value: dwValue,
+                          items: items
+                              .map(
+                                (item) => DropdownMenuItem<String>(
+                                  value: item,
+                                  child: Text(
+                                    item,
+                                    style: smallBold,
+                                  ),
                                 ),
-                              ),
-                            )
-                            .toList(),
-                        onChanged: (value) {
-                          setState(() {
-                            dwValue = value;
-                          });
-                        },
+                              )
+                              .toList(),
+                          onChanged: (value) {
+                            setState(() {
+                              dwValue = value;
+                            });
+                          },
+                        ),
                       ),
                     ),
-                  ),
-                  SizedBox(height: 15),
-                  MyTextField(
-                    controller: titleController,
-                    hintText: 'Enter the blog title',
-                    prefixIcon: Icons.circle,
-                  ),
-                  SizedBox(height: 15),
-                  TextFormField(
-                    textAlign: TextAlign.justify,
-                    maxLines: 20,
-                    controller: descriptonController,
-                    cursorColor: appColor,
-                    style:
-                        TextStyle(color: appColor, fontWeight: FontWeight.w500),
-                    decoration: InputDecoration(
-                      filled: true,
-                      fillColor: Colors.grey.withOpacity(0.1),
-                      contentPadding: EdgeInsets.only(left: 10),
-                      focusColor: Colors.grey.withOpacity(0.1),
-                      hintText: 'Enter the blog descripton',
-                      hintStyle: TextStyle(
-                          color: Colors.grey, fontWeight: FontWeight.normal),
-                      border: OutlineInputBorder(
-                        borderSide: BorderSide.none,
-                        borderRadius: BorderRadius.circular(20),
-                      ),
+                    SizedBox(height: 15),
+                    MyTextField(
+                      controller: titleController,
+                      hintText: 'Enter the blog title',
+                      prefixIcon: Icons.circle,
                     ),
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'This field must not be empty';
-                      }
-                      return null;
-                    },
+                    SizedBox(height: 15),
+                    TextFormField(
+                      textAlign: TextAlign.justify,
+                      maxLines: 20,
+                      controller: descriptonController,
+                      cursorColor: appColor,
+                      style: TextStyle(
+                          color: appColor, fontWeight: FontWeight.w500),
+                      decoration: InputDecoration(
+                        filled: true,
+                        fillColor: Colors.grey.withOpacity(0.1),
+                        contentPadding: EdgeInsets.only(left: 10),
+                        focusColor: Colors.grey.withOpacity(0.1),
+                        hintText: 'Enter the blog descripton',
+                        hintStyle: TextStyle(
+                            color: Colors.grey, fontWeight: FontWeight.normal),
+                        border: OutlineInputBorder(
+                          borderSide: BorderSide.none,
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                      ),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'This field must not be empty';
+                        }
+                        return null;
+                      },
+                    ),
+                  ],
+                ),
+              ),
+              SizedBox(height: 35),
+              InkWell(
+                onTap: _onUploadBlog,
+                child: Container(
+                  alignment: Alignment.center,
+                  height: 50,
+                  width: 140,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(23),
+                    color: btnColor,
                   ),
-                ],
-              ),
-            ),
-            SizedBox(height: 35),
-            InkWell(
-              onTap: _onUploadBlog,
-              child: Container(
-                alignment: Alignment.center,
-                height: 50,
-                width: 140,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(23),
-                  color: btnColor,
-                ),
-                child: Text(
-                  'Upload',
-                  style: btnStyle,
+                  child: Text(
+                    'Upload',
+                    style: btnStyle,
+                  ),
                 ),
               ),
-            ),
-            SizedBox(height: 10),
-          ],
+              SizedBox(height: 10),
+            ],
+          ),
         ),
       ),
     );
@@ -226,6 +249,6 @@ class _AddBlogpageState extends State<AddBlogpage> {
       );
       return;
     }
-    Get.offAllNamed(MyAppRoutes.blogPageRoute);
+    Get.offAllNamed(MyAppRoutes.bottomNavPageRoute);
   }
 }

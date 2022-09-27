@@ -29,10 +29,10 @@ class BlogItem extends StatelessWidget {
                         ),
                       ),
                       SizedBox(width: 10),
-                      Text(
+                      Expanded(child: Text(
                         'Cristiano Ronaldo',
                         style: smallBold,
-                      ),
+                      ),)
                     ],
                   ),
                   SizedBox(height: 10),
