@@ -1,11 +1,18 @@
-// ignore_for_file: use_key_in_widget_constructors, prefer_const_constructors, prefer_const_literals_to_create_immutables
+// ignore_for_file: use_key_in_widget_constructors, prefer_const_constructors, prefer_const_literals_to_create_immutables, unused_local_variable, unnecessary_null_comparison, empty_catches
 
+import 'package:blog_app/auth/auth_service.dart';
+import 'package:blog_app/controlers/user_controler.dart';
 import 'package:blog_app/route/my_app_routes.dart';
 import 'package:blog_app/utils/colors.dart';
 import 'package:blog_app/utils/style.dart';
 import 'package:blog_app/widgets/my_textField.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import '../../models/user_model.dart';
 import '../../utils/colors.dart';
 
 class LogInPage extends StatefulWidget {
@@ -14,6 +21,8 @@ class LogInPage extends StatefulWidget {
 }
 
 class _LogInPageState extends State<LogInPage> {
+  var userControler = Get.put(UserControler());
+
   bool isVisible = true;
   bool isObsucure = true;
   final emailController = TextEditingController();
@@ -104,9 +113,7 @@ class _LogInPageState extends State<LogInPage> {
                     ),
                     SizedBox(height: 35),
                     InkWell(
-                      onTap: () {
-                        Get.offNamed(MyAppRoutes.bottomNavPageRoute);
-                      },
+                      onTap: _authinticate,
                       child: Container(
                         alignment: Alignment.center,
                         height: 50,
@@ -149,8 +156,11 @@ class _LogInPageState extends State<LogInPage> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Image.asset('images/google2.png',
-                            height: 40, width: 40),
+                        InkWell(
+                          onTap: _googleSingIn,
+                          child: Image.asset('images/google2.png',
+                              height: 40, width: 40),
+                        ),
                         SizedBox(width: 20),
                         Image.asset('images/fb2.png', height: 40, width: 40),
                       ],
@@ -163,6 +173,51 @@ class _LogInPageState extends State<LogInPage> {
         ),
       ),
     );
+  }
+
+  void _googleSingIn() {
+    signInWithGoogle().then((value) {
+      if (value.user != null) {
+        EasyLoading.show(status: "Please wait");
+        final userModel = UserModel(
+          uId: value.user!.uid,
+          name: value.user!.displayName ?? 'Not Available',
+          email: value.user!.email!,
+          profileImage: value.user!.photoURL,
+          userCreationTime:
+              Timestamp.fromDate(value.user!.metadata.creationTime!),
+        );
+        userControler.addUser(userModel).then((value) {
+          Get.offNamed(MyAppRoutes.bottomNavPageRoute);
+          EasyLoading.dismiss();
+        });
+      }
+    });
+  }
+
+  void _authinticate() async {
+    if (emailController.text == null || emailController.text.isEmpty) {
+      Get.snackbar('Error', 'Please enter your email');
+      return;
+    }
+    if (passwordController.text == null || passwordController.text.isEmpty) {
+      Get.snackbar('Error', 'Please enter your password');
+      return;
+    }
+    try {
+      EasyLoading.show(status: 'Please wait');
+      final status = await AuthService.logIn(
+        emailController.text,
+        passwordController.text,
+      );
+      if (status) {
+        Get.offAllNamed(MyAppRoutes.launcherPageRoute);
+        EasyLoading.dismiss();
+      }
+    } on FirebaseAuthException catch (e) {
+      Get.snackbar('Error', e.message!);
+      EasyLoading.dismiss();
+    }
   }
 }
 
@@ -202,4 +257,22 @@ class MyCliper extends CustomClipper<Path> {
   bool shouldReclip(covariant CustomClipper<Path> oldClipper) {
     return false;
   }
+}
+
+Future<UserCredential> signInWithGoogle() async {
+  // Trigger the authentication flow
+  final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+
+  // Obtain the auth details from the request
+  final GoogleSignInAuthentication? googleAuth =
+      await googleUser?.authentication;
+
+  // Create a new credential
+  final credential = GoogleAuthProvider.credential(
+    accessToken: googleAuth?.accessToken,
+    idToken: googleAuth?.idToken,
+  );
+
+  // Once signed in, return the UserCredential
+  return await FirebaseAuth.instance.signInWithCredential(credential);
 }

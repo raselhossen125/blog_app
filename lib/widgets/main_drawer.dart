@@ -1,12 +1,16 @@
-// ignore_for_file: use_key_in_widget_constructors, prefer_const_constructors, prefer_const_literals_to_create_immutables, sized_box_for_whitespace
+// ignore_for_file: use_key_in_widget_constructors, prefer_const_constructors, prefer_const_literals_to_create_immutables, sized_box_for_whitespace, must_be_immutable
 
+import 'package:blog_app/controlers/user_controler.dart';
 import 'package:blog_app/route/my_app_routes.dart';
 import 'package:blog_app/utils/colors.dart';
 import 'package:blog_app/utils/style.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import '../auth/auth_service.dart';
 
 class MainDrawer extends StatelessWidget {
+  final userController = Get.put(UserControler());
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -34,8 +38,13 @@ class MainDrawer extends StatelessWidget {
                 children: [
                   ClipRRect(
                     borderRadius: BorderRadius.circular(100),
-                    child: Image.asset(
-                      'images/image5.jpg',
+                    child: AuthService.user!.photoURL !=null ? Image.network(
+                      AuthService.user!.photoURL!,
+                      height: 100,
+                      width: 100,
+                      fit: BoxFit.cover,
+                    ) : Image.asset(
+                      'images/R.png',
                       height: 100,
                       width: 100,
                       fit: BoxFit.cover,
@@ -44,12 +53,12 @@ class MainDrawer extends StatelessWidget {
                   Padding(
                     padding: const EdgeInsets.only(top: 10, bottom: 5),
                     child: Text(
-                      'Cristiano Ronaldo',
+                      'Not available',
                       style: smallBoldW,
                     ),
                   ),
                   Text(
-                    'ronaldo914157@gmail.com',
+                    AuthService.user!.email!,
                     style: smallBoldW,
                   ),
                 ],
@@ -82,6 +91,20 @@ class MainDrawer extends StatelessWidget {
                     ),
                     title: Text(
                       'Search',
+                      style: smallBold,
+                    ),
+                  ),
+                  ListTile(
+                    onTap: () {
+                      AuthService.logOut();
+                      Get.offAllNamed(MyAppRoutes.launcherPageRoute);
+                    },
+                    leading: Icon(
+                      Icons.logout,
+                      color: iconColor,
+                    ),
+                    title: Text(
+                      'LogOut',
                       style: smallBold,
                     ),
                   ),
