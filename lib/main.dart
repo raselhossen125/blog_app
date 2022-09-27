@@ -1,12 +1,16 @@
 // ignore_for_file: prefer_const_constructors, unused_local_variable
 
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
 import 'route/my_app_pages.dart';
 import 'views/spalash_page.dart';
 
-void main() {
+void main() async{
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   SystemChrome.setSystemUIOverlayStyle(
     SystemUiOverlayStyle(
       statusBarColor: Color(0xff006666),
@@ -42,6 +46,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: pokeballRed,
       ),
+      builder: EasyLoading.init(),
       home: SpalashPage(),
     );
   }
