@@ -6,6 +6,7 @@ import 'package:blog_app/utils/style.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../auth/auth_service.dart';
 import '../widgets/profile_blog_item.dart';
 
 class ProfilePage extends StatelessWidget {
@@ -21,7 +22,7 @@ class ProfilePage extends StatelessWidget {
               floating: true,
               snap: true,
               title: Text(
-                'Cristiano Ronaldo',
+                AuthService.user!.displayName ?? " Not available",
                 style: TextStyle(
                   color: Colors.white,
                   fontWeight: FontWeight.bold,
@@ -42,11 +43,11 @@ class ProfilePage extends StatelessWidget {
                     bottomLeft: Radius.circular(25),
                   ),
                   child: Image.asset(
-                    'images/image3.jpg',
-                    height: 230,
-                    width: MediaQuery.of(context).size.width,
-                    fit: BoxFit.cover,
-                  ),
+                          'images/image3.jpg',
+                          height: 230,
+                          width: MediaQuery.of(context).size.width,
+                          fit: BoxFit.cover,
+                        )
                 ),
                 Positioned(
                   top: 145,
@@ -63,12 +64,19 @@ class ProfilePage extends StatelessWidget {
                       ),
                       ClipRRect(
                         borderRadius: BorderRadius.circular(100),
-                        child: Image.asset(
-                          'images/image5.jpg',
-                          height: 140,
-                          width: 140,
-                          fit: BoxFit.cover,
-                        ),
+                        child: AuthService.user!.photoURL == null
+                            ? Image.asset(
+                                'images/R.png',
+                                height: 140,
+                                width: 140,
+                                fit: BoxFit.cover,
+                              )
+                            : Image.network(
+                                AuthService.user!.photoURL!,
+                                height: 140,
+                                width: 140,
+                                fit: BoxFit.cover,
+                              ),
                       ),
                     ],
                   ),
@@ -105,9 +113,9 @@ class ProfilePage extends StatelessWidget {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.only(top: 72, left: 40),
+              padding: const EdgeInsets.only(top: 25, left: 40),
               child: Text(
-                'Cristiano Ronaldo',
+                AuthService.user!.displayName ?? 'Not Available',
                 style: largeBold,
               ),
             ),
@@ -119,6 +127,7 @@ class ProfilePage extends StatelessWidget {
               ),
             ),
             ListView.builder(
+              padding: EdgeInsets.all(0),
               primary: false,
               shrinkWrap: true,
               itemCount: 5,

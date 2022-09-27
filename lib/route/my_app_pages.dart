@@ -1,6 +1,7 @@
 import 'package:blog_app/views/add_blog_page.dart';
 import 'package:blog_app/views/bottom_nav_page.dart';
 import 'package:blog_app/views/edit_profile_page.dart';
+import 'package:blog_app/views/launcher_page.dart';
 import 'package:get/get.dart';
 import '../views/auth/login_page.dart';
 import '../views/auth/register_page.dart';
@@ -14,6 +15,10 @@ class MyAppPages {
     GetPage(
       name: MyAppRoutes.spalashPageRoute,
       page: () => SpalashPage(),
+    ),
+    GetPage(
+      name: MyAppRoutes.launcherPageRoute,
+      page: () => LauncherPage(),
     ),
     GetPage(
       name: MyAppRoutes.logInPageRoute,

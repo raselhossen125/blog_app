@@ -1,6 +1,9 @@
-// ignore_for_file: use_key_in_widget_constructors, prefer_const_constructors
+// ignore_for_file: use_key_in_widget_constructors, prefer_const_constructors, empty_catches, avoid_print, unnecessary_null_comparison
 
+import 'package:blog_app/auth/auth_service.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
 
 import '../../route/my_app_routes.dart';
@@ -19,6 +22,7 @@ class _RegisterPageState extends State<RegisterPage> {
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
   final nameController = TextEditingController();
+  final formkey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
@@ -59,12 +63,13 @@ class _RegisterPageState extends State<RegisterPage> {
                     ),
                     SizedBox(height: 15),
                     TextFormField(
+                      key: formkey,
                       keyboardType: TextInputType.visiblePassword,
                       controller: passwordController,
                       cursorColor: appColor,
                       obscureText: isObsucure,
-                      style:
-                          TextStyle(color: appColor, fontWeight: FontWeight.w500),
+                      style: TextStyle(
+                          color: appColor, fontWeight: FontWeight.w500),
                       decoration: InputDecoration(
                         filled: true,
                         fillColor: Colors.grey.withOpacity(0.1),
@@ -111,9 +116,7 @@ class _RegisterPageState extends State<RegisterPage> {
                     ),
                     SizedBox(height: 35),
                     InkWell(
-                      onTap: () {
-                        Get.offNamed(MyAppRoutes.bottomNavPageRoute);
-                      },
+                      onTap: _authenticate,
                       child: Container(
                         alignment: Alignment.center,
                         height: 50,
@@ -147,20 +150,6 @@ class _RegisterPageState extends State<RegisterPage> {
                         ),
                       ],
                     ),
-                    SizedBox(height: 30),
-                    Text(
-                      'or',
-                      style: mediamBold,
-                    ),
-                    SizedBox(height: 30),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Image.asset('images/google2.png', height: 40, width: 40),
-                        SizedBox(width: 20),
-                        Image.asset('images/fb2.png', height: 40, width: 40),
-                      ],
-                    )
                   ],
                 ),
               )
@@ -169,6 +158,36 @@ class _RegisterPageState extends State<RegisterPage> {
         ),
       ),
     );
+  }
+
+  void _authenticate() async {
+    if (nameController.text == null || nameController.text.isEmpty) {
+      Get.snackbar('Error', 'Please enter your name');
+      return;
+    }
+    if (emailController.text == null || emailController.text.isEmpty) {
+      Get.snackbar('Error', 'Please enter your email');
+      return;
+    }
+    if (passwordController.text == null || passwordController.text.isEmpty) {
+      Get.snackbar('Error', 'Please enter your password');
+      return;
+    }
+    try {
+      EasyLoading.show(status: 'Please wait');
+      AuthService.register(
+        nameController.text,
+        emailController.text,
+        passwordController.text,
+      ).then((value) {
+        Get.offAllNamed(MyAppRoutes.launcherPageRoute);
+        EasyLoading.dismiss();
+      });
+    } on FirebaseAuthException catch (e) {
+      EasyLoading.dismiss();
+        Get.snackbar('Error', e.message!);
+        print(e.message!);
+    }
   }
 }
 

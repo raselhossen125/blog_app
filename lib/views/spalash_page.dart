@@ -13,7 +13,7 @@ class _SpalashPageState extends State<SpalashPage> {
   @override
   void initState() {
     Future.delayed(Duration(seconds: 3), () {
-      Get.offNamed(MyAppRoutes.logInPageRoute);
+      Get.offNamed(MyAppRoutes.launcherPageRoute);
     });
     super.initState();
   }

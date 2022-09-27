@@ -6,11 +6,24 @@ import 'package:blog_app/widgets/my_textField.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../auth/auth_service.dart';
 import '../utils/style.dart';
 
-class EditProfilePage extends StatelessWidget {
+class EditProfilePage extends StatefulWidget {
+  @override
+  State<EditProfilePage> createState() => _EditProfilePageState();
+}
+
+class _EditProfilePageState extends State<EditProfilePage> {
   final nameController = TextEditingController();
   final emailController = TextEditingController();
+
+  @override
+  void initState() {
+    nameController.text = AuthService.user!.displayName ?? "";
+    emailController.text = AuthService.user!.email!;
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -72,12 +85,19 @@ class EditProfilePage extends StatelessWidget {
                       ),
                       ClipRRect(
                         borderRadius: BorderRadius.circular(100),
-                        child: Image.asset(
-                          'images/image5.jpg',
-                          height: 140,
-                          width: 140,
-                          fit: BoxFit.cover,
-                        ),
+                        child: AuthService.user!.photoURL == null
+                            ? Image.asset(
+                                'images/R.png',
+                                height: 140,
+                                width: 140,
+                                fit: BoxFit.cover,
+                              )
+                            : Image.network(
+                                AuthService.user!.photoURL!,
+                                height: 140,
+                                width: 140,
+                                fit: BoxFit.cover,
+                              ),
                       ),
                       Positioned(
                         left: 120,
@@ -119,23 +139,23 @@ class EditProfilePage extends StatelessWidget {
                   ),
                   SizedBox(height: 30),
                   InkWell(
-                      onTap: () {
-                        Get.offAllNamed(MyAppRoutes.bottomNavPageRoute);
-                      },
-                      child: Container(
-                        alignment: Alignment.center,
-                        height: 50,
-                        width: 140,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(23),
-                          color: btnColor,
-                        ),
-                        child: Text(
-                          'Update',
-                          style: btnStyle,
-                        ),
+                    onTap: () {
+                      Get.offAllNamed(MyAppRoutes.bottomNavPageRoute);
+                    },
+                    child: Container(
+                      alignment: Alignment.center,
+                      height: 50,
+                      width: 140,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(23),
+                        color: btnColor,
+                      ),
+                      child: Text(
+                        'Update',
+                        style: btnStyle,
                       ),
                     ),
+                  ),
                 ],
               ),
             )

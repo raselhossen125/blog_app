@@ -1,5 +1,6 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors, use_key_in_widget_constructors
 
+import 'package:blog_app/auth/auth_service.dart';
 import 'package:blog_app/utils/colors.dart';
 import 'package:blog_app/views/blog_page.dart';
 import 'package:blog_app/views/profile_page.dart';
@@ -40,13 +41,28 @@ class _ShowBottomNavScreenState extends State<ShowBottomNavScreen> {
           selectedIndex: index,
           onDestinationSelected: (index) => setState(() => this.index = index),
           destinations: [
-            NavigationDestination(icon: Icon(Icons.home, color: Colors.white,), label: "Home"),
-            NavigationDestination(icon: Icon(Icons.air, color: Colors.white,), label: "Applications"),
-            NavigationDestination(icon: Icon(Icons.search, color: Colors.white,), label: "Search"),
+            NavigationDestination(
+                icon: Icon(
+                  Icons.home,
+                  color: Colors.white,
+                ),
+                label: "Home"),
+            NavigationDestination(
+                icon: Icon(
+                  Icons.air,
+                  color: Colors.white,
+                ),
+                label: "Applications"),
+            NavigationDestination(
+                icon: Icon(
+                  Icons.search,
+                  color: Colors.white,
+                ),
+                label: "Search"),
             NavigationDestination(
               icon: CircleAvatar(
                 radius: 12,
-                backgroundImage: AssetImage('images/image5.jpg'),
+                backgroundImage: AssetImage('images/R.png'),
               ),
               label: 'Me',
             )
