@@ -1,5 +1,6 @@
-// ignore_for_file: use_key_in_widget_constructors, prefer_const_constructors, prefer_const_literals_to_create_immutables, avoid_unnecessary_containers, sized_box_for_whitespace
+// ignore_for_file: use_key_in_widget_constructors, prefer_const_constructors, prefer_const_literals_to_create_immutables, avoid_unnecessary_containers, sized_box_for_whitespace, unnecessary_null_comparison, avoid_print
 
+import 'package:blog_app/controlers/blog_controller.dart';
 import 'package:blog_app/route/my_app_routes.dart';
 import 'package:blog_app/utils/colors.dart';
 import 'package:blog_app/utils/style.dart';
@@ -16,6 +17,7 @@ class BlogPage extends StatefulWidget {
 
 class _BlogPageState extends State<BlogPage> {
   bool isVisible = true;
+  final blogController = Get.put(BlogController());
 
   @override
   Widget build(BuildContext context) {
@@ -88,13 +90,20 @@ class _BlogPageState extends State<BlogPage> {
             }
             return true;
           },
-          child: ListView.builder(
-            padding: EdgeInsets.all(0),
-            itemCount: 5,
-            itemBuilder: (context, index) {
-              return BlogItem();
-            },
-          ),
+          child: blogController.bloagList != null
+              ? ListView.builder(
+                  padding: EdgeInsets.all(0),
+                  itemCount: blogController.bloagList.length,
+                  itemBuilder: (context, index) {
+                    final blogM = blogController.bloagList[index];
+                    return BlogItem(
+                      blogModel: blogM,
+                    );
+                  },
+                )
+              : Center(
+                  child: Text('No blog found'),
+                ),
         ),
       ),
     );

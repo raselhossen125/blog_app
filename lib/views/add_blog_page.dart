@@ -1,11 +1,15 @@
-// ignore_for_file: use_key_in_widget_constructors, prefer_const_constructors, prefer_const_literals_to_create_immutables, must_be_immutable, sized_box_for_whitespace, unnecessary_null_comparison, unnecessary_this
+// ignore_for_file: use_key_in_widget_constructors, prefer_const_constructors, prefer_const_literals_to_create_immutables, must_be_immutable, sized_box_for_whitespace, unnecessary_null_comparison, unnecessary_this, unused_local_variable, use_build_context_synchronously
 
+import 'package:blog_app/controlers/blog_controller.dart';
+import 'package:blog_app/models/blog_model.dart';
 import 'package:blog_app/route/my_app_routes.dart';
 import 'package:blog_app/utils/colors.dart';
 import 'package:blog_app/widgets/my_textField.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
-
+import 'package:image_picker/image_picker.dart';
 import '../utils/style.dart';
 
 class AddBlogpage extends StatefulWidget {
@@ -14,11 +18,22 @@ class AddBlogpage extends StatefulWidget {
 }
 
 class _AddBlogpageState extends State<AddBlogpage> {
+  final blogController = Get.put(BlogController());
   late Size size;
   final titleController = TextEditingController();
   final descriptonController = TextEditingController();
-  final items = ['Sports', 'Movie', 'Game', 'Natok', 'Country'];
+  final items = ['Sports', 'Movie', 'Game', 'Natok', 'Country', 'Others'];
   String? dwValue;
+  String? imageUrl;
+  bool isGalary = true;
+
+  @override
+  void dispose() {
+    blogController.dispose();
+    titleController.dispose();
+    descriptonController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -47,12 +62,23 @@ class _AddBlogpageState extends State<AddBlogpage> {
           child: Column(
             children: [
               ClipRRect(
-                child: Image.asset(
-                  'images/image1.jpg',
-                  height: 250,
-                  width: size.width,
-                  fit: BoxFit.cover,
-                ),
+                child: imageUrl == null
+                    ? Container(
+                        alignment: Alignment.center,
+                        height: 250,
+                        width: size.width,
+                        color: Colors.grey.withOpacity(0.2),
+                        child: Text(
+                          'No Image choseen',
+                          style: mediamNormal,
+                        ),
+                      )
+                    : Image.network(
+                        imageUrl!,
+                        height: 250,
+                        width: size.width,
+                        fit: BoxFit.cover,
+                      ),
               ),
               SizedBox(height: 15),
               InkWell(
@@ -78,7 +104,10 @@ class _AddBlogpageState extends State<AddBlogpage> {
                           ),
                           SizedBox(height: 40),
                           TextButton.icon(
-                            onPressed: () {},
+                            onPressed: () {
+                              isGalary = false;
+                              _getImage();
+                            },
                             icon: Icon(
                               Icons.camera,
                               color: iconColor,
@@ -89,7 +118,10 @@ class _AddBlogpageState extends State<AddBlogpage> {
                             ),
                           ),
                           TextButton.icon(
-                            onPressed: () {},
+                            onPressed: () {
+                              isGalary = true;
+                              _getImage();
+                            },
                             icon: Icon(
                               Icons.image,
                               color: iconColor,
@@ -224,12 +256,36 @@ class _AddBlogpageState extends State<AddBlogpage> {
     );
   }
 
+  void _getImage() async {
+    final status = isGalary;
+    final selectedImage = await ImagePicker()
+        .pickImage(source: isGalary ? ImageSource.gallery : ImageSource.camera);
+    if (selectedImage != null) {
+      try {
+        EasyLoading.show(status: 'Please wait');
+        final url = await blogController.updateImage(selectedImage);
+        setState(() {
+          imageUrl = url;
+        });
+        Navigator.of(context).pop();
+        EasyLoading.dismiss();
+      } catch (e) {
+        EasyLoading.dismiss();
+        Get.snackbar('Error', e.toString());
+      }
+    }
+  }
+
   void _onUploadBlog() {
+    if (imageUrl == null) {
+      Get.snackbar('Error', 'Please chose blog image', colorText: Colors.black);
+      return;
+    }
     if (dwValue == null) {
       Get.snackbar(
         'Error',
         'Please chose the blog category',
-        colorText: Colors.white,
+        colorText: Colors.black,
       );
       return;
     }
@@ -237,7 +293,7 @@ class _AddBlogpageState extends State<AddBlogpage> {
       Get.snackbar(
         'Error',
         'Please enter the blog title',
-        colorText: Colors.white,
+        colorText: Colors.black,
       );
       return;
     }
@@ -245,10 +301,21 @@ class _AddBlogpageState extends State<AddBlogpage> {
       Get.snackbar(
         'Error',
         'Please enter the blog descripton',
-        colorText: Colors.white,
+        colorText: Colors.black,
       );
       return;
     }
-    Get.offAllNamed(MyAppRoutes.bottomNavPageRoute);
+    EasyLoading.show(status: 'Please wait');
+    final blogModel = BlogModel(
+      title: titleController.text,
+      category: dwValue!,
+      image: imageUrl!,
+      descripton: descriptonController.text,
+      blogCreationTime: Timestamp.now(),
+    );
+    blogController.addBlog(blogModel).then((value) {
+      EasyLoading.dismiss();
+      Get.offAllNamed(MyAppRoutes.bottomNavPageRoute);
+    });
   }
 }

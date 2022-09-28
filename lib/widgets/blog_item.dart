@@ -1,10 +1,17 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, sized_box_for_whitespace, use_key_in_widget_constructors
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, sized_box_for_whitespace, use_key_in_widget_constructors, must_be_immutable
 
-import 'package:blog_app/utils/colors.dart';
+import 'package:blog_app/models/blog_model.dart';
+import 'package:blog_app/utils/helper_function.dart';
 import 'package:flutter/material.dart';
 import '../utils/style.dart';
 
 class BlogItem extends StatelessWidget {
+  BlogModel blogModel;
+
+  BlogItem({
+    required this.blogModel,
+  });
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -29,10 +36,12 @@ class BlogItem extends StatelessWidget {
                         ),
                       ),
                       SizedBox(width: 10),
-                      Expanded(child: Text(
-                        'Cristiano Ronaldo',
-                        style: smallBold,
-                      ),)
+                      Expanded(
+                        child: Text(
+                          'Cristiano Ronaldo',
+                          style: smallBold,
+                        ),
+                      )
                     ],
                   ),
                   SizedBox(height: 10),
@@ -42,11 +51,11 @@ class BlogItem extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          'April 20, 2022',
+                          getFormatedDateTime(blogModel.blogCreationTime.toDate(), 'MMM dd yyy'),
                           style: smallNormal,
                         ),
                         Text(
-                          '10: 25 am',
+                          getFormatedDateTime(blogModel.blogCreationTime.toDate(), 'hh : mm a'),
                           style: smallNormal,
                         ),
                       ],
@@ -63,8 +72,8 @@ class BlogItem extends StatelessWidget {
                 minWidth: double.infinity,
               ),
               child: ClipRRect(
-                child: Image.asset(
-                  'images/image2.jpg',
+                child: Image.network(
+                  blogModel.image,
                   width: double.infinity,
                   fit: BoxFit.cover,
                 ),
@@ -80,24 +89,27 @@ class BlogItem extends StatelessWidget {
                     children: [
                       Expanded(
                         child: Text(
-                          'Shakib all hasan',
-                          style: smallBold,
+                          blogModel.title,
+                          style: mediamBold,
                         ),
                       ),
                       SizedBox(width: 10),
                       Text(
-                        'Sports',
+                        blogModel.category,
                         style: smallBold,
                       ),
                     ],
                   ),
                   SizedBox(height: 15),
-                  Text(
-                    txt,
-                    textAlign: TextAlign.justify,
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 16,
+                  Align(
+                    alignment: Alignment.centerLeft,
+                    child: Text(
+                      blogModel.descripton,
+                      textAlign: TextAlign.justify,
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 16,
+                      ),
                     ),
                   ),
                 ],
