@@ -1,15 +1,22 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, sized_box_for_whitespace, use_key_in_widget_constructors, sort_child_properties_last
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, sized_box_for_whitespace, use_key_in_widget_constructors, sort_child_properties_last, must_be_immutable, unnecessary_null_comparison, prefer_if_null_operators
 
-import 'package:blog_app/utils/colors.dart';
+import 'package:blog_app/controlers/user_controler.dart';
+import 'package:blog_app/models/blog_model.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import '../models/user_model.dart';
+import '../utils/helper_function.dart';
 import '../utils/style.dart';
 
-class ProfileBlogItem extends StatefulWidget {
-  @override
-  State<ProfileBlogItem> createState() => _ProfileBlogItemState();
-}
+class ProfileBlogItem extends StatelessWidget {
+  final userController = Get.put(UserControler());
+  BlogModel blogModel;
 
-class _ProfileBlogItemState extends State<ProfileBlogItem> {
+  ProfileBlogItem({
+    required this.blogModel,
+  });
+
   final items = ['Sports', 'Movie', 'Game', 'Natok', 'Country'];
   String? dwValue;
 
@@ -25,44 +32,62 @@ class _ProfileBlogItemState extends State<ProfileBlogItem> {
               padding: const EdgeInsets.only(left: 10, right: 10, bottom: 10),
               child: Column(
                 children: [
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Container(
-                        margin: EdgeInsets.only(top: 10),
-                        height: 30,
-                        width: 30,
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(100),
-                          child: Image.asset('images/R.png'),
-                        ),
-                      ),
-                      SizedBox(width: 10),
-                      Expanded(
-                        child: Padding(
-                          padding: const EdgeInsets.only(top: 16),
-                          child: Text(
-                            'Cristiano Ronaldo',
-                            style: smallBold,
-                          ),
-                        ),
-                      ),
-                      SizedBox(width: 10),
-                      Spacer(),
-                      PopupMenuButton(
-                        itemBuilder: (context) => [
-                          PopupMenuItem(
-                            child: Text("Edit"),
-                            value: 1,
-                          ),
-                          PopupMenuItem(
-                            child: Text("Delete"),
-                            value: 2,
-                          )
-                        ],
-                      ),
-                    ],
-                  ),
+                  StreamBuilder<DocumentSnapshot<Map<String, dynamic>>>(
+                      stream: userController.getUserByUid(blogModel.blogId!),
+                      builder: (BuildContext context,
+                          AsyncSnapshot<dynamic> snapshot) {
+                        if (snapshot.hasData) {
+                          final userM = UserModel.fromMap(snapshot.data.data());
+                          return Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Container(
+                                margin: EdgeInsets.only(top: 10),
+                                height: 30,
+                                width: 30,
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(100),
+                                  child: userM.profileImage == null ? Image.asset('images/R.png') : Image.network(userM.profileImage!),
+                                ),
+                              ),
+                              SizedBox(width: 10),
+                              Expanded(
+                                child: Padding(
+                                  padding: const EdgeInsets.only(top: 16),
+                                  child: Text(
+                                    userM.name != null
+                                        ? userM.name
+                                        : 'Not Available',
+                                    style: smallBold,
+                                  ),
+                                ),
+                              ),
+                              SizedBox(width: 10),
+                              Spacer(),
+                              PopupMenuButton(
+                                itemBuilder: (context) => [
+                                  PopupMenuItem(
+                                    child: Text("Edit"),
+                                    value: 1,
+                                  ),
+                                  PopupMenuItem(
+                                    child: Text("Delete"),
+                                    value: 2,
+                                  )
+                                ],
+                              ),
+                            ],
+                          );
+                        }
+                        if (snapshot.hasError) {
+                          return Center(
+                            child: Text('Failed to face data'),
+                          );
+                        }
+                        return Center(
+                          child: CircularProgressIndicator(),
+                        );
+                      }),
                   SizedBox(height: 10),
                   Padding(
                     padding: const EdgeInsets.only(left: 5, right: 5),
@@ -70,11 +95,14 @@ class _ProfileBlogItemState extends State<ProfileBlogItem> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          'April 20, 2022',
+                          getFormatedDateTime(
+                              blogModel.blogCreationTime.toDate(),
+                              'MMM dd yyy'),
                           style: smallNormal,
                         ),
                         Text(
-                          '10: 25 am',
+                          getFormatedDateTime(
+                              blogModel.blogCreationTime.toDate(), 'hh : mm a'),
                           style: smallNormal,
                         ),
                       ],
@@ -91,8 +119,8 @@ class _ProfileBlogItemState extends State<ProfileBlogItem> {
                 minWidth: double.infinity,
               ),
               child: ClipRRect(
-                child: Image.asset(
-                  'images/image2.jpg',
+                child: Image.network(
+                  blogModel.image,
                   width: double.infinity,
                   fit: BoxFit.cover,
                 ),
@@ -108,20 +136,20 @@ class _ProfileBlogItemState extends State<ProfileBlogItem> {
                     children: [
                       Expanded(
                         child: Text(
-                          'Shakib all hasan',
+                          blogModel.title,
                           style: smallBold,
                         ),
                       ),
                       SizedBox(width: 10),
                       Text(
-                        'Sports',
+                        blogModel.category,
                         style: smallBold,
                       ),
                     ],
                   ),
                   SizedBox(height: 15),
                   Text(
-                    txt,
+                    blogModel.descripton,
                     textAlign: TextAlign.justify,
                     style: TextStyle(
                       color: Colors.black,

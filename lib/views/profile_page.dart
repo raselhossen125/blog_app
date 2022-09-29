@@ -1,6 +1,7 @@
 // ignore_for_file: use_key_in_widget_constructors, prefer_const_constructors, prefer_const_literals_to_create_immutables, sized_box_for_whitespace, unnecessary_null_comparison, prefer_if_null_operators, unused_local_variable
 
 import 'package:blog_app/auth/auth_service.dart';
+import 'package:blog_app/controlers/blog_controller.dart';
 import 'package:blog_app/controlers/user_controler.dart';
 import 'package:blog_app/route/my_app_routes.dart';
 import 'package:blog_app/utils/colors.dart';
@@ -14,9 +15,11 @@ import '../widgets/profile_blog_item.dart';
 
 class ProfilePage extends StatelessWidget {
   final userController = Get.put(UserControler());
+  final blogController = Get.put(BlogController());
 
   @override
   Widget build(BuildContext context) {
+    blogController.getBlogByUserId(AuthService.user!.uid);
     return Scaffold(
       backgroundColor: bgColor,
       body: StreamBuilder<DocumentSnapshot<Map<String, dynamic>>>(
@@ -146,9 +149,10 @@ class ProfilePage extends StatelessWidget {
                       padding: EdgeInsets.all(0),
                       primary: false,
                       shrinkWrap: true,
-                      itemCount: 5,
+                      itemCount: blogController.bloagListByUid.length,
                       itemBuilder: (context, index) {
-                        return ProfileBlogItem();
+                        final blogM = blogController.bloagListByUid[index];
+                        return ProfileBlogItem(blogModel: blogM);
                       },
                     ),
                   ],
