@@ -1,5 +1,6 @@
 // ignore_for_file: use_key_in_widget_constructors, prefer_const_constructors
 
+import 'package:blog_app/utils/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../route/my_app_routes.dart';
@@ -21,6 +22,7 @@ class _SpalashPageState extends State<SpalashPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: bgColor,
       body: Center(
         child: Text('Blog', style: TextStyle(
           fontWeight: FontWeight.bold,

@@ -1,11 +1,17 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, sized_box_for_whitespace, use_key_in_widget_constructors, must_be_immutable
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, sized_box_for_whitespace, use_key_in_widget_constructors, must_be_immutable, unnecessary_null_comparison, prefer_if_null_operators, unused_local_variable
 
+import 'package:blog_app/controlers/user_controler.dart';
 import 'package:blog_app/models/blog_model.dart';
 import 'package:blog_app/utils/helper_function.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import '../auth/auth_service.dart';
+import '../models/user_model.dart';
 import '../utils/style.dart';
 
 class BlogItem extends StatelessWidget {
+  final userController = Get.put(UserControler());
   BlogModel blogModel;
 
   BlogItem({
@@ -17,7 +23,7 @@ class BlogItem extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.only(bottom: 10),
       child: Container(
-        color: Colors.grey.withOpacity(0.1),
+        color: Colors.white,
         child: Column(
           children: [
             Padding(
@@ -25,25 +31,41 @@ class BlogItem extends StatelessWidget {
               child: Column(
                 children: [
                   SizedBox(height: 10),
-                  Row(
-                    children: [
-                      Container(
-                        height: 30,
-                        width: 30,
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(100),
-                          child: Image.asset('images/R.png'),
-                        ),
-                      ),
-                      SizedBox(width: 10),
-                      Expanded(
-                        child: Text(
-                          'Cristiano Ronaldo',
-                          style: smallBold,
-                        ),
-                      )
-                    ],
-                  ),
+                  StreamBuilder<DocumentSnapshot<Map<String, dynamic>>>(
+                      stream: userController.getUserByUid(blogModel.blogId!),
+                      builder: (BuildContext context,
+                          AsyncSnapshot<dynamic> snapshot) {
+                        if (snapshot.hasData) {
+                          final userM = UserModel.fromMap(snapshot.data.data());
+                          return Row(
+                            children: [
+                              Container(
+                                height: 30,
+                                width: 30,
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(100),
+                                  child: userM.profileImage != null
+                                      ? Image.network(userM.profileImage!)
+                                      : Image.asset('images/R.png'),
+                                ),
+                              ),
+                              SizedBox(width: 10),
+                              Expanded(
+                                child: Text(
+                                  userM.name != null
+                                      ? userM.name
+                                      : 'Not Available',
+                                  style: smallBold,
+                                ),
+                              )
+                            ],
+                          );
+                        }
+                        if (snapshot.hasError) {
+                          return Text('Failed to face data');
+                        }
+                        return CircularProgressIndicator();
+                      }),
                   SizedBox(height: 10),
                   Padding(
                     padding: const EdgeInsets.only(left: 5, right: 5),
@@ -51,11 +73,14 @@ class BlogItem extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          getFormatedDateTime(blogModel.blogCreationTime.toDate(), 'MMM dd yyy'),
+                          getFormatedDateTime(
+                              blogModel.blogCreationTime.toDate(),
+                              'MMM dd yyy'),
                           style: smallNormal,
                         ),
                         Text(
-                          getFormatedDateTime(blogModel.blogCreationTime.toDate(), 'hh : mm a'),
+                          getFormatedDateTime(
+                              blogModel.blogCreationTime.toDate(), 'hh : mm a'),
                           style: smallNormal,
                         ),
                       ],

@@ -28,6 +28,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: bgColor,
       appBar: AppBar(
         title: Text('Edit Profile'),
         actions: [
@@ -77,10 +78,10 @@ class _EditProfilePageState extends State<EditProfilePage> {
                     alignment: Alignment.center,
                     children: [
                       Container(
-                        height: 150,
-                        width: 150,
+                        height: 147,
+                        width: 147,
                         decoration: BoxDecoration(
-                            color: Colors.grey.withOpacity(0.7),
+                            color: Colors.grey.withOpacity(0.4),
                             shape: BoxShape.circle),
                       ),
                       ClipRRect(

@@ -1,6 +1,8 @@
 // ignore_for_file: use_key_in_widget_constructors, prefer_const_constructors, prefer_const_literals_to_create_immutables, must_be_immutable, sized_box_for_whitespace, unnecessary_null_comparison, unnecessary_this, unused_local_variable, use_build_context_synchronously
 
+import 'package:blog_app/auth/auth_service.dart';
 import 'package:blog_app/controlers/blog_controller.dart';
+import 'package:blog_app/controlers/user_controler.dart';
 import 'package:blog_app/models/blog_model.dart';
 import 'package:blog_app/route/my_app_routes.dart';
 import 'package:blog_app/utils/colors.dart';
@@ -237,13 +239,13 @@ class _AddBlogpageState extends State<AddBlogpage> {
                 child: Container(
                   alignment: Alignment.center,
                   height: 50,
-                  width: 140,
+                  width: 150,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(23),
                     color: btnColor,
                   ),
                   child: Text(
-                    'Upload',
+                    'Create Blog',
                     style: btnStyle,
                   ),
                 ),
@@ -277,6 +279,9 @@ class _AddBlogpageState extends State<AddBlogpage> {
   }
 
   void _onUploadBlog() {
+    final userController = Get.put(UserControler());
+    final snapshort = userController.getUserByUid(AuthService.user!.uid);
+
     if (imageUrl == null) {
       Get.snackbar('Error', 'Please chose blog image', colorText: Colors.black);
       return;

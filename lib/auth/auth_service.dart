@@ -28,6 +28,7 @@ class AuthService {
       userCreationTime:
           Timestamp.fromDate(credensial.user!.metadata.creationTime!),
     );
+    AuthService.user!.updateDisplayName(name);
     return DBHelper.addUser(userModel);
   }
 

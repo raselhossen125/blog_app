@@ -18,7 +18,7 @@ class _ProfileBlogItemState extends State<ProfileBlogItem> {
     return Padding(
       padding: const EdgeInsets.only(bottom: 10),
       child: Container(
-        color: Colors.grey.withOpacity(0.1),
+        color: Colors.white,
         child: Column(
           children: [
             Padding(

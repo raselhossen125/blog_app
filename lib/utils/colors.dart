@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-const bgColor = Colors.white;
+const bgColor = Color(0xfff5f5f5);
 const appColor = Color(0xff006666);
 const iconColor = Color(0xff007373);
 const btnColor = Color(0xff008080);

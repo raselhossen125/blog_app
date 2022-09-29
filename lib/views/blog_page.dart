@@ -1,6 +1,7 @@
 // ignore_for_file: use_key_in_widget_constructors, prefer_const_constructors, prefer_const_literals_to_create_immutables, avoid_unnecessary_containers, sized_box_for_whitespace, unnecessary_null_comparison, avoid_print
 
 import 'package:blog_app/controlers/blog_controller.dart';
+import 'package:blog_app/controlers/user_controler.dart';
 import 'package:blog_app/route/my_app_routes.dart';
 import 'package:blog_app/utils/colors.dart';
 import 'package:blog_app/utils/style.dart';
@@ -22,6 +23,7 @@ class _BlogPageState extends State<BlogPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: bgColor,
       floatingActionButton: isVisible
           ? AnimatedContainer(
               height: 55,
