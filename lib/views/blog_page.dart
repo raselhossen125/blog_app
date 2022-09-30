@@ -92,20 +92,16 @@ class _BlogPageState extends State<BlogPage> {
             }
             return true;
           },
-          child: blogController.bloagList != null
-              ? ListView.builder(
-                  padding: EdgeInsets.all(0),
-                  itemCount: blogController.bloagList.length,
-                  itemBuilder: (context, index) {
-                    final blogM = blogController.bloagList[index];
-                    return BlogItem(
-                      blogModel: blogM,
-                    );
-                  },
-                )
-              : Center(
-                  child: Text('No blog found'),
-                ),
+          child: ListView.builder(
+            padding: EdgeInsets.all(0),
+            itemCount: blogController.bloagList.length,
+            itemBuilder: (context, index) {
+              final blogM = blogController.bloagList[index];
+              return BlogItem(
+                blogModel: blogM,
+              );
+            },
+          ),
         ),
       ),
     );

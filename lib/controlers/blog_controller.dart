@@ -26,17 +26,17 @@ class BlogController extends GetxController {
       bloagList = List.generate(snapshort.docs.length,
           (index) => BlogModel.fromMap(snapshort.docs[index].data()));
     });
+    update();
   }
 
   getBlogByUserId(String uid) {
-    print(bloagList.length);
-    print('suru');
+    bloagListByUid.clear();
     bloagList.map((item) {
       if (item.blogId == uid) {
         bloagListByUid.add(item);
       }
     }).toList();
-    print(bloagListByUid.length);
+    update();
   }
 
   Future<String> updateImage(XFile xFile) async {
