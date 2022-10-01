@@ -11,7 +11,7 @@ import 'package:get/get.dart';
 import '../auth/auth_service.dart';
 
 class MainDrawer extends StatelessWidget {
-  final userController = Get.put(UserControler());
+  final emailController = TextEditingController(text: AuthService.user!.email);
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +23,8 @@ class MainDrawer extends StatelessWidget {
           topRight: Radius.circular(25),
         )),
         child: StreamBuilder<DocumentSnapshot<Map<String, dynamic>>>(
-            stream: userController.getUserByUid(AuthService.user!.uid),
+            stream:
+                Get.find<UserControler>().getUserByUid(AuthService.user!.uid),
             builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
               if (snapshot.hasData) {
                 final userM = UserModel.fromMap(snapshot.data.data());
@@ -60,15 +61,33 @@ class MainDrawer extends StatelessWidget {
                                   ),
                           ),
                           Padding(
-                            padding: const EdgeInsets.only(top: 10, bottom: 5),
+                            padding: const EdgeInsets.only(top: 10),
                             child: Text(
                               userM.name != null ? userM.name : 'Not Available',
                               style: smallBoldW,
                             ),
                           ),
-                          Text(
-                            userM.email,
-                            style: smallBoldW,
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                userM.email,
+                                style: smallBoldW,
+                              ),
+                              SizedBox(width: 8),
+                              InkWell(
+                                onTap: () {
+                                  showEditDialog(
+                                    Icons.email,
+                                    'Enter your email',
+                                  );
+                                },
+                                child: Icon(
+                                  Icons.edit,
+                                  color: Colors.red,
+                                ),
+                              )
+                            ],
                           ),
                         ],
                       ),
@@ -132,5 +151,47 @@ class MainDrawer extends StatelessWidget {
             }),
       ),
     );
+  }
+
+  void showEditDialog(IconData prefixIcon, String hintText) {
+    Get.defaultDialog(
+        title: 'Edit Name',
+        content: TextFormField(
+          controller: emailController,
+          cursorColor: appColor,
+          style: TextStyle(color: appColor, fontWeight: FontWeight.w500),
+          decoration: InputDecoration(
+            filled: true,
+            fillColor: Colors.grey.withOpacity(0.1),
+            contentPadding: EdgeInsets.only(left: 10),
+            focusColor: Colors.grey.withOpacity(0.1),
+            prefixIcon: Icon(
+              prefixIcon,
+              color: iconColor,
+            ),
+            hintText: hintText,
+            hintStyle:
+                TextStyle(color: Colors.grey, fontWeight: FontWeight.normal),
+            border: OutlineInputBorder(
+              borderSide: BorderSide.none,
+              borderRadius: BorderRadius.circular(20),
+            ),
+          ),
+        ),
+        actions: [
+          TextButton(
+              onPressed: () {
+                Get.back();
+              },
+              child: Text('Cancel')),
+          TextButton(
+              onPressed: () {
+                Get.find<UserControler>()
+                    .updateProfile({UserEmail: emailController.text});
+                AuthService.updateEmail(emailController.text);
+                Get.back();
+              },
+              child: Text('Save')),
+        ]);
   }
 }

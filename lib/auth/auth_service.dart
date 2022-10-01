@@ -32,5 +32,17 @@ class AuthService {
     return DBHelper.addUser(userModel);
   }
 
+  static updateDisplayName(String newName) {
+    AuthService.user!.updateDisplayName(newName);
+  }
+
+  static updateEmail(String newEmail) async{
+    AuthService.user!.updateEmail(newEmail);
+  }
+
+  static updateProfilePic(String newprofilePic) {
+    AuthService.user!.updatePhotoURL(newprofilePic);
+  }
+
   static Future<void> logOut() => _auth.signOut();
 }

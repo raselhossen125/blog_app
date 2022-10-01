@@ -6,12 +6,10 @@ import 'package:blog_app/utils/helper_function.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../auth/auth_service.dart';
 import '../models/user_model.dart';
 import '../utils/style.dart';
 
 class BlogItem extends StatelessWidget {
-  final userController = Get.put(UserControler());
   BlogModel blogModel;
 
   BlogItem({
@@ -32,7 +30,7 @@ class BlogItem extends StatelessWidget {
                 children: [
                   SizedBox(height: 10),
                   StreamBuilder<DocumentSnapshot<Map<String, dynamic>>>(
-                      stream: userController.getUserByUid(blogModel.blogId!),
+                      stream: Get.find<UserControler>().getUserByUid(blogModel.blogId!),
                       builder: (BuildContext context,
                           AsyncSnapshot<dynamic> snapshot) {
                         if (snapshot.hasData) {

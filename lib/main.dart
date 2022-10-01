@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
-import 'route/my_app_pages.dart';
+import 'route/my_app_routes.dart';
 import 'views/spalash_page.dart';
 
 void main() async{
@@ -41,13 +41,13 @@ class MyApp extends StatelessWidget {
     MaterialColor pokeballRed = MaterialColor(0xff006666, pokeballRedSwatch);
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
-      getPages: MyAppPages.pages,
+      initialRoute: MyAppRoutes.spalashPageRoute,
+      getPages: MyAppRoutes.pages,
       title: 'Flutter Demo',
       theme: ThemeData(
         primarySwatch: pokeballRed,
       ),
       builder: EasyLoading.init(),
-      home: SpalashPage(),
     );
   }
 }

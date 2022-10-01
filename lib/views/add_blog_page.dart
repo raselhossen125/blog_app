@@ -4,7 +4,6 @@ import 'package:blog_app/auth/auth_service.dart';
 import 'package:blog_app/controlers/blog_controller.dart';
 import 'package:blog_app/controlers/user_controler.dart';
 import 'package:blog_app/models/blog_model.dart';
-import 'package:blog_app/route/my_app_routes.dart';
 import 'package:blog_app/utils/colors.dart';
 import 'package:blog_app/widgets/my_textField.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -20,7 +19,7 @@ class AddBlogpage extends StatefulWidget {
 }
 
 class _AddBlogpageState extends State<AddBlogpage> {
-  final blogController = Get.put(BlogController());
+  final blogController = Get.find<BlogController>();
   late Size size;
   final titleController = TextEditingController();
   final descriptonController = TextEditingController();
@@ -31,7 +30,6 @@ class _AddBlogpageState extends State<AddBlogpage> {
 
   @override
   void dispose() {
-    blogController.dispose();
     titleController.dispose();
     descriptonController.dispose();
     super.dispose();
@@ -320,7 +318,7 @@ class _AddBlogpageState extends State<AddBlogpage> {
     );
     blogController.addBlog(blogModel).then((value) {
       EasyLoading.dismiss();
-      Get.offAllNamed(MyAppRoutes.bottomNavPageRoute);
+      Get.back();
     });
   }
 }

@@ -1,4 +1,4 @@
-// ignore_for_file: unnecessary_string_interpolations
+// ignore_for_file: unnecessary_string_interpolations, non_constant_identifier_names
 
 import 'package:blog_app/models/blog_model.dart';
 import 'package:blog_app/models/user_model.dart';
@@ -30,5 +30,9 @@ class DBHelper {
 
   static Stream<QuerySnapshot<Map<String, dynamic>>> getAllBlogs() {
     return _db.collection(blogsCollection).orderBy('$BlogCreationTime', descending: true).snapshots();
+  }
+
+  static Future<void> updateProfile(String uid, Map<String, dynamic> map) {
+    return _db.collection(usersCollection).doc(uid).update(map);
   }
 }
