@@ -14,7 +14,7 @@ import 'package:image_picker/image_picker.dart';
 import '../utils/style.dart';
 
 class AddBlogpage extends StatefulWidget {
-  BlogModel blogModel;
+  BlogModel? blogModel;
 
   AddBlogpage({
     required this.blogModel,
@@ -40,6 +40,10 @@ class _AddBlogpageState extends State<AddBlogpage> {
     if (widget.blogModel != null) {
       setState(() {
         isEdit = true;
+        titleController.text = widget.blogModel!.title;
+        descriptonController.text = widget.blogModel!.descripton;
+        dwValue = widget.blogModel!.category;
+        imageUrl = widget.blogModel!.image;
       });
     }
     super.initState();
@@ -294,7 +298,8 @@ class _AddBlogpageState extends State<AddBlogpage> {
   }
 
   void _onUpdateBlog() {
-
+    // update blog 
+    
   }
 
   void _onUploadBlog() {

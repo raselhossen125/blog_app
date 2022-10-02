@@ -71,6 +71,7 @@ class ProfileBlogItem extends StatelessWidget {
                               PopupMenuButton(
                                 onSelected: (value) {
                                   if (value == 'edit') {
+                                    Get.find<BlogController>().selectedBlog = blogModel;
                                     Get.toNamed(MyAppRoutes.addBlogPageRoute);
                                   }
                                   else if (value == 'delete') {

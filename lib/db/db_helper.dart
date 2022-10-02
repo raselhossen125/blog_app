@@ -37,6 +37,10 @@ class DBHelper {
     return _db.collection(usersCollection).doc(uid).update(map);
   }
 
+  static Future<void> updateBlog(String blogId, Map<String, dynamic> map) {
+    return _db.collection(blogsCollection).doc(blogId).update(map);
+  }
+
   static Future<void> deleteBlog(String blogId, String uid) {
     return _db.collection(blogsCollection).doc(blogId).delete();
   }

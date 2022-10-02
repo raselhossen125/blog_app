@@ -42,6 +42,10 @@ class BlogController extends GetxController {
     }).toList();
   }
 
+  updateBlog(String blogId, Map<String, dynamic> map) {
+    DBHelper.updateBlog(blogId, map);
+  }
+
   Future<void> deleteBlog(String blogId) {
     return DBHelper.deleteBlog(blogId, AuthService.user!.uid);
   }

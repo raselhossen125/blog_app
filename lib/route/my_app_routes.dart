@@ -48,7 +48,7 @@ class MyAppRoutes {
     ),
     GetPage(
       name: MyAppRoutes.addBlogPageRoute,
-      page: () => AddBlogpage(blogModel: Get.find<BlogController>().selectedBlog!),
+      page: () => AddBlogpage( blogModel: Get.find<BlogController>().selectedBlog!),
     ),
     GetPage(
       name: MyAppRoutes.profilePageRoute,
