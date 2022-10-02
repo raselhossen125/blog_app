@@ -1,5 +1,6 @@
 import 'package:blog_app/binding/all_binding.dart';
 import 'package:get/get.dart';
+import '../controlers/blog_controller.dart';
 import '../views/add_blog_page.dart';
 import '../views/auth/login_page.dart';
 import '../views/auth/register_page.dart';
@@ -47,7 +48,7 @@ class MyAppRoutes {
     ),
     GetPage(
       name: MyAppRoutes.addBlogPageRoute,
-      page: () => AddBlogpage(),
+      page: () => AddBlogpage(blogModel: Get.find<BlogController>().selectedBlog!),
     ),
     GetPage(
       name: MyAppRoutes.profilePageRoute,

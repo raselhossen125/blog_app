@@ -30,7 +30,7 @@ class BlogItem extends StatelessWidget {
                 children: [
                   SizedBox(height: 10),
                   StreamBuilder<DocumentSnapshot<Map<String, dynamic>>>(
-                      stream: Get.find<UserControler>().getUserByUid(blogModel.blogId!),
+                      stream: Get.find<UserControler>().getUserByUid(blogModel.userId!),
                       builder: (BuildContext context,
                           AsyncSnapshot<dynamic> snapshot) {
                         if (snapshot.hasData) {

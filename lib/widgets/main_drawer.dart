@@ -48,7 +48,7 @@ class MainDrawer extends StatelessWidget {
                             borderRadius: BorderRadius.circular(100),
                             child: userM.profileImage != null
                                 ? Image.network(
-                                    AuthService.user!.photoURL!,
+                                    userM.profileImage!,
                                     height: 100,
                                     width: 100,
                                     fit: BoxFit.cover,
@@ -70,9 +70,12 @@ class MainDrawer extends StatelessWidget {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              Text(
-                                userM.email,
-                                style: smallBoldW,
+                              Padding(
+                                padding: const EdgeInsets.only(left: 18),
+                                child: Text(
+                                  userM.email,
+                                  style: smallBoldW,
+                                ),
                               ),
                               SizedBox(width: 8),
                               InkWell(

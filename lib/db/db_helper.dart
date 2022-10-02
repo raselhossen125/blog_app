@@ -19,7 +19,8 @@ class DBHelper {
 
   static Future<void> addBlog(BlogModel blogModel, uid) {
     final doc = _db.collection(blogsCollection).doc();
-    blogModel.blogId = uid;
+    blogModel.blogId = doc.id;
+    blogModel.userId = uid;
     return doc.set(blogModel.toMap());
   }
 
@@ -34,5 +35,9 @@ class DBHelper {
 
   static Future<void> updateProfile(String uid, Map<String, dynamic> map) {
     return _db.collection(usersCollection).doc(uid).update(map);
+  }
+
+  static Future<void> deleteBlog(String blogId, String uid) {
+    return _db.collection(blogsCollection).doc(blogId).delete();
   }
 }

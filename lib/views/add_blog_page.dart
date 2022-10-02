@@ -14,6 +14,12 @@ import 'package:image_picker/image_picker.dart';
 import '../utils/style.dart';
 
 class AddBlogpage extends StatefulWidget {
+  BlogModel blogModel;
+
+  AddBlogpage({
+    required this.blogModel,
+  });
+
   @override
   State<AddBlogpage> createState() => _AddBlogpageState();
 }
@@ -27,6 +33,17 @@ class _AddBlogpageState extends State<AddBlogpage> {
   String? dwValue;
   String? imageUrl;
   bool isGalary = true;
+  bool isEdit = false;
+
+  @override
+  void initState() {
+    if (widget.blogModel != null) {
+      setState(() {
+        isEdit = true;
+      });
+    }
+    super.initState();
+  }
 
   @override
   void dispose() {
@@ -48,7 +65,7 @@ class _AddBlogpageState extends State<AddBlogpage> {
               floating: true,
               snap: true,
               title: Text(
-                'New Blog',
+                isEdit ? 'Edit Blog' : 'New Blog',
                 style: TextStyle(
                   color: Colors.white,
                   fontWeight: FontWeight.bold,
@@ -233,7 +250,7 @@ class _AddBlogpageState extends State<AddBlogpage> {
               ),
               SizedBox(height: 35),
               InkWell(
-                onTap: _onUploadBlog,
+                onTap: isEdit ? _onUpdateBlog : _onUploadBlog,
                 child: Container(
                   alignment: Alignment.center,
                   height: 50,
@@ -243,7 +260,7 @@ class _AddBlogpageState extends State<AddBlogpage> {
                     color: btnColor,
                   ),
                   child: Text(
-                    'Create Blog',
+                    isEdit ? 'Update Blog' : 'Create Blog',
                     style: btnStyle,
                   ),
                 ),
@@ -274,6 +291,10 @@ class _AddBlogpageState extends State<AddBlogpage> {
         Get.snackbar('Error', e.toString());
       }
     }
+  }
+
+  void _onUpdateBlog() {
+
   }
 
   void _onUploadBlog() {

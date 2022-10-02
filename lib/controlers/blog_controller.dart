@@ -12,6 +12,7 @@ class BlogController extends GetxController {
   List<BlogModel> bloagList = [];
   List<BlogModel> bloagListByUid = [];
   var isLoading = false.obs;
+  BlogModel? selectedBlog;
 
   @override
   void onInit() {
@@ -35,10 +36,18 @@ class BlogController extends GetxController {
   getBlogByUserId(String uid) {
     bloagListByUid.clear();
     bloagList.map((item) {
-      if (item.blogId == uid) {
+      if (item.userId == uid) {
         bloagListByUid.add(item);
       }
     }).toList();
+  }
+
+  Future<void> deleteBlog(String blogId) {
+    return DBHelper.deleteBlog(blogId, AuthService.user!.uid);
+  }
+
+  deleteBlogByBlogId(String blogId) {
+    bloagListByUid.removeWhere((element) => element.blogId == blogId);
   }
 
   Future<String> updateImage(XFile xFile) async {

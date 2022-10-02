@@ -1,7 +1,9 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, sized_box_for_whitespace, use_key_in_widget_constructors, sort_child_properties_last, must_be_immutable, unnecessary_null_comparison, prefer_if_null_operators
 
+import 'package:blog_app/controlers/blog_controller.dart';
 import 'package:blog_app/controlers/user_controler.dart';
 import 'package:blog_app/models/blog_model.dart';
+import 'package:blog_app/route/my_app_routes.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -33,7 +35,7 @@ class ProfileBlogItem extends StatelessWidget {
               child: Column(
                 children: [
                   StreamBuilder<DocumentSnapshot<Map<String, dynamic>>>(
-                      stream: userController.getUserByUid(blogModel.blogId!),
+                      stream: userController.getUserByUid(blogModel.userId!),
                       builder: (BuildContext context,
                           AsyncSnapshot<dynamic> snapshot) {
                         if (snapshot.hasData) {
@@ -47,7 +49,9 @@ class ProfileBlogItem extends StatelessWidget {
                                 width: 30,
                                 child: ClipRRect(
                                   borderRadius: BorderRadius.circular(100),
-                                  child: userM.profileImage == null ? Image.asset('images/R.png') : Image.network(userM.profileImage!),
+                                  child: userM.profileImage == null
+                                      ? Image.asset('images/R.png')
+                                      : Image.network(userM.profileImage!),
                                 ),
                               ),
                               SizedBox(width: 10),
@@ -65,14 +69,27 @@ class ProfileBlogItem extends StatelessWidget {
                               SizedBox(width: 10),
                               Spacer(),
                               PopupMenuButton(
+                                onSelected: (value) {
+                                  if (value == 'edit') {
+                                    Get.toNamed(MyAppRoutes.addBlogPageRoute);
+                                  }
+                                  else if (value == 'delete') {
+                                    Get.find<BlogController>()
+                                        .deleteBlog(blogModel.blogId!);
+                                    Get.find<BlogController>()
+                                        .deleteBlogByBlogId(blogModel.blogId!);
+                                    Get.snackbar(
+                                        'Message', 'Blog delete succesfully');
+                                  }
+                                },
                                 itemBuilder: (context) => [
                                   PopupMenuItem(
                                     child: Text("Edit"),
-                                    value: 1,
+                                    value: 'edit',
                                   ),
                                   PopupMenuItem(
                                     child: Text("Delete"),
-                                    value: 2,
+                                    value: 'delete',
                                   )
                                 ],
                               ),

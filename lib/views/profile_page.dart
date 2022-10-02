@@ -224,6 +224,7 @@ class _ProfilePageState extends State<ProfilePage> {
                       itemBuilder: (context, index) {
                         final blogM =
                             Get.find<BlogController>().bloagListByUid[index];
+                        Get.find<BlogController>().selectedBlog = blogM;
                         return ProfileBlogItem(blogModel: blogM);
                       },
                     )
