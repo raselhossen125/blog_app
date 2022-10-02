@@ -1,9 +1,10 @@
-// ignore_for_file: use_key_in_widget_constructors, prefer_const_constructors, prefer_const_literals_to_create_immutables, must_be_immutable, sized_box_for_whitespace, unnecessary_null_comparison, unnecessary_this, unused_local_variable, use_build_context_synchronously
+// ignore_for_file: use_key_in_widget_constructors, prefer_const_constructors, prefer_const_literals_to_create_immutables, must_be_immutable, sized_box_for_whitespace, unnecessary_null_comparison, unnecessary_this, unused_local_variable, use_build_context_synchronously, unnecessary_string_interpolations, unnecessary_brace_in_string_interps
 
 import 'package:blog_app/auth/auth_service.dart';
 import 'package:blog_app/controlers/blog_controller.dart';
 import 'package:blog_app/controlers/user_controler.dart';
 import 'package:blog_app/models/blog_model.dart';
+import 'package:blog_app/route/my_app_routes.dart';
 import 'package:blog_app/utils/colors.dart';
 import 'package:blog_app/widgets/my_textField.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -298,8 +299,29 @@ class _AddBlogpageState extends State<AddBlogpage> {
   }
 
   void _onUpdateBlog() {
-    // update blog 
-    
+    if (imageUrl != null &&
+        dwValue != null &&
+        titleController.text != null &&
+        titleController.text.isNotEmpty &&
+        descriptonController.text.isNotEmpty &&
+        descriptonController.text != null) {
+          EasyLoading.show(status: 'Please wait');
+      Get.find<BlogController>().updateBlog(widget.blogModel!.blogId!, {
+        '$BlogTitle' : '${titleController.text}',
+        '$BlogDescripton' : '${descriptonController.text}',
+        '$BlogCategory' : '${dwValue}',
+        '$BlogImage' : '${imageUrl}',
+      }); 
+      Get.snackbar('Message', 'Update sucessfully');
+      Get.offNamed(MyAppRoutes.bottomNavPageRoute);
+      EasyLoading.dismiss();
+      imageUrl = '';
+      dwValue = '';
+      titleController.text = '';
+      descriptonController.text = '';
+    } else {
+      Get.snackbar('Message', 'Please fill the form');
+    }
   }
 
   void _onUploadBlog() {
