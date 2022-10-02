@@ -71,16 +71,36 @@ class ProfileBlogItem extends StatelessWidget {
                               PopupMenuButton(
                                 onSelected: (value) {
                                   if (value == 'edit') {
-                                    Get.find<BlogController>().selectedBlog = blogModel;
+                                    Get.find<BlogController>().selectedBlog =
+                                        blogModel;
                                     Get.toNamed(MyAppRoutes.addBlogPageRoute);
-                                  }
-                                  else if (value == 'delete') {
-                                    Get.find<BlogController>()
-                                        .deleteBlog(blogModel.blogId!);
-                                    Get.find<BlogController>()
-                                        .deleteBlogByBlogId(blogModel.blogId!);
-                                    Get.snackbar(
-                                        'Message', 'Blog delete succesfully');
+                                  } else if (value == 'delete') {
+                                    Get.defaultDialog(
+                                        title: 'Delete Blog',
+                                        titlePadding: EdgeInsets.all(5),
+                                        content: Text(
+                                            'Are you sure delete this blog?'),
+                                        actions: [
+                                          TextButton(
+                                            onPressed: () {
+                                              Get.back();
+                                            },
+                                            child: Text('No'),
+                                          ),
+                                          TextButton(
+                                            onPressed: () {
+                                              Get.find<BlogController>()
+                                                  .deleteBlog(
+                                                      blogModel.blogId!);
+                                              Get.find<BlogController>()
+                                                  .deleteBlogByBlogId(
+                                                      blogModel.blogId!);
+                                              Get.snackbar('Message',
+                                                  'Blog delete succesfully');
+                                            },
+                                            child: Text('Yes'),
+                                          ),
+                                        ]);
                                   }
                                 },
                                 itemBuilder: (context) => [
